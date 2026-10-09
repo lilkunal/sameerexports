@@ -26,6 +26,47 @@ for p in P:
 CATS = {c: ps for s in SECTIONS.values() for c, ps in s.items()}
 
 CSS = """
+/* preloader: a hand presses the lever, the door swings open */
+#pl{position:fixed;inset:0;z-index:999;background:#0b0907;display:grid;place-items:center;perspective:1400px;transition:opacity .6s,visibility .6s}html.nopl #pl{display:none}#pl.gone{opacity:0;visibility:hidden}
+.pl-room{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,#f6e3b4 0,#d9b45a 18%,#2a2014 48%,#0b0907 70%);opacity:0;transition:opacity 1s .9s}#pl.go .pl-room{opacity:1}
+.pl-frame{position:relative;width:min(46vw,260px);aspect-ratio:1/2;border:10px solid #3a2d1c;border-bottom:0;border-radius:6px 6px 0 0;box-shadow:0 0 0 2px #5a4528,0 30px 80px #000;transform-style:preserve-3d}
+.pl-door{position:absolute;inset:0;background:linear-gradient(135deg,#5b3d22,#3c2715);transform-origin:left center;transition:transform 1.25s cubic-bezier(.65,0,.3,1) 1s;box-shadow:inset 0 0 0 1px #ffffff12}#pl.go .pl-door{transform:rotateY(-104deg)}
+.pl-panel{position:absolute;left:14%;right:14%;top:8%;height:36%;border:2px solid #ffffff14;border-radius:4px;box-shadow:inset 0 0 20px #0005}.pl-panel.b{top:52%;height:40%}
+.pl-plate{position:absolute;right:9%;top:46%;width:16%;height:22%;border-radius:999px;background:linear-gradient(160deg,#f3d98a,#b8892b 55%,#6b4c12);box-shadow:0 4px 10px #0008}
+.pl-lever{position:absolute;top:18%;right:30%;width:420%;height:13%;border-radius:999px;background:linear-gradient(180deg,#f7e3a6,#c9962f 60%,#7a5714);transform-origin:96% 50%;transition:transform .35s ease .65s;box-shadow:0 3px 6px #0008}#pl.go .pl-lever{transform:rotate(-24deg)}
+.pl-key{position:absolute;left:38%;bottom:20%;width:24%;height:22%;border-radius:50% 50% 30% 30%;background:#2a1d0e}
+.pl-hand{position:absolute;right:62%;top:39%;width:130%;filter:drop-shadow(0 8px 10px #0009);opacity:0;transform:translateX(-70%);overflow:visible}#pl.go .pl-hand{opacity:1;animation:press 1s cubic-bezier(.3,.7,.2,1) .05s both}
+@keyframes press{0%{opacity:0;transform:translateX(-70%)}45%{opacity:1;transform:translate(0,0)}70%{transform:translate(0,30%) rotate(-12deg)}88%{opacity:1;transform:translate(0,30%) rotate(-12deg)}100%{opacity:0;transform:translate(-20%,30%) rotate(-12deg)}}
+.pl-name{position:absolute;bottom:9vh;text-align:center;color:#f5ecd9;font:600 clamp(22px,4vw,34px) Fraunces,serif;letter-spacing:.02em;opacity:0;transform:translateY(10px);transition:all .6s .4s}.pl-name small{display:block;font:500 12px Inter;letter-spacing:.2em;text-transform:uppercase;color:#d9b45a;margin-top:6px}#pl.go .pl-name{opacity:1;transform:none}
+.pl-skip{position:absolute;top:18px;right:18px;background:#ffffff14;color:#e9dcc0;border:1px solid #ffffff2a;border-radius:999px;padding:8px 16px;cursor:pointer;font:500 13px Inter;backdrop-filter:blur(8px)}
+
+/* scroll reveal */
+.rv{opacity:0;transform:translateY(26px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),transform .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}.rv.in{opacity:1;transform:none}
+.hero .w>div:first-child{transform:translateY(calc(var(--py,0px)*-.4))}.hero .h3d{transform:translateY(calc(var(--py,0px)*.3))}
+html:not(.plx) .hero .w>div:first-child>*{opacity:0}html.plx .hero .w>div:first-child>*{animation:up .9s cubic-bezier(.2,.7,.2,1) both}html.plx .hero .w>div:first-child>*:nth-child(2){animation-delay:.12s}html.plx .hero .w>div:first-child>*:nth-child(3){animation-delay:.24s}html.plx .hero .w>div:first-child>*:nth-child(4){animation-delay:.36s}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+/* ambient brass light behind the glass */
+.ambient{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(40vw 40vw at 85% 10%,#d9b45a2e,transparent 60%),radial-gradient(35vw 35vw at 5% 60%,#b8892b24,transparent 60%),radial-gradient(30vw 30vw at 60% 95%,#e8c77a22,transparent 60%)}
+
+/* glassmorphism */
+:root{--glass:rgba(255,255,255,.62);--glass-b:rgba(255,255,255,.75);--glass-s:0 8px 32px rgba(60,40,10,.10)}
+:root[data-theme=dark]{--glass:rgba(30,26,20,.55);--glass-b:rgba(255,255,255,.08);--glass-s:0 8px 32px rgba(0,0,0,.35)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--glass:rgba(30,26,20,.55);--glass-b:rgba(255,255,255,.08);--glass-s:0 8px 32px rgba(0,0,0,.35)}}
+header{background:var(--glass)!important;backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--glass-b);transition:box-shadow .3s}header.sc{box-shadow:var(--glass-s)}
+.pc,.sec,.card,.post,.person,.trust,.feat,.side,.bulk,.dd .menu,.sug,.drawer:not([hidden]),.mbar,.qt{background:var(--glass)!important;backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border:1px solid var(--glass-b)!important;box-shadow:var(--glass-s)}
+.pc,.sec{transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}.pc.in:hover,.sec.in:hover{transform:translateY(-6px);box-shadow:0 20px 44px rgba(60,40,10,.18)}
+.pc .im,.sec .im{border-radius:12px;margin:8px;background:var(--well)}.pc .im img,.sec .im img{transition:transform .5s cubic-bezier(.2,.7,.2,1)}.pc:hover .im img,.sec:hover .im img{transform:scale(1.06) rotate(-1deg)}
+.band{background:linear-gradient(135deg,rgba(20,17,13,.92),rgba(43,34,22,.88))!important;backdrop-filter:blur(14px);border:1px solid #ffffff14}
+.btn{box-shadow:0 6px 18px rgba(184,137,43,.35);transition:transform .2s,box-shadow .2s,background .2s}.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(184,137,43,.45)}.btn.o{box-shadow:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important}#pl{display:none}}
+
+.h3d{position:relative;aspect-ratio:1;max-height:560px;width:100%}.h3d canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .8s;cursor:grab;touch-action:pan-y}.h3d.ready canvas{opacity:1}.h3d.ready .hgrid{opacity:0;pointer-events:none}.h3d .hgrid{position:absolute;inset:8% 0;transition:opacity .6s}
+.h3d::before{content:"";position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,#d9b45a33,transparent 65%)}.h3hint{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:12px;color:#a8997c;opacity:0;transition:opacity .6s}.h3d.ready .h3hint{opacity:1}
+.trust{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:var(--r);background:var(--card);margin-top:22px}.trust div{padding:14px 16px;border-right:1px solid var(--line)}.trust div:last-child{border:0}.trust b{display:block;font-size:14px}.trust span{font-size:12.5px;color:var(--mute)}
+.rng{margin-bottom:34px}.rng h2{font-size:24px;margin:0}.rowx{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,210px);gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}.rowx .pc{scroll-snap-align:start}
+.bulk{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--tint);border:1px solid var(--line);border-radius:18px;padding:26px 28px;margin-top:30px}.bulk h2{font-size:24px;margin:0 0 4px}.bulk p{margin:0;color:var(--text2)}
+@media(max-width:900px){.trust{grid-template-columns:1fr 1fr}.trust div{border-bottom:1px solid var(--line)}.rowx{grid-auto-columns:46%}.h3d{max-height:340px;margin-top:8px}.h3d .hgrid{display:none}}
 .wab{background:#1fa855}.wab:hover{background:#178a45}@media(max-width:900px){.wa span{display:none}.wa{padding:14px;bottom:80px}}
 .sug{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 36px #00000026;z-index:70;overflow:hidden;max-height:70vh;overflow-y:auto}.sug a{display:flex;gap:12px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line)}.sug a:hover,.sug a.on{background:var(--tint)}.sug img{width:44px;height:44px;object-fit:contain;background:var(--well);border-radius:8px;flex:none}.sug b{display:block;font-size:14px;font-weight:600}.sug small{color:var(--mute);font-size:12px}.sug .all{justify-content:center;color:var(--brass);font-weight:600;font-size:14px}.sug .none{padding:14px;margin:0;color:var(--mute);font-size:14px}
 :root{--text:#14110d;--text2:#3b342a;--well:#fff;--tint:#f4ecda;--ink:#14110d;--ink2:#2a241c;--brass:#b8892b;--brass2:#d9b45a;--paper:#faf7f1;--card:#fff;--line:#e8e1d3;--mute:#6e665a;--ok:#2f7a4a;--r:14px;color-scheme:light}
@@ -49,9 +90,9 @@ nav.mn{border-top:1px solid var(--line)}nav.mn .w{display:flex;gap:4px;align-ite
 section{padding:56px 0}.sh{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:24px}.sh h2{font-size:clamp(26px,3vw,36px);margin:0}.sh a{color:var(--brass);font-weight:600;font-size:14px}
 .kick{color:var(--brass);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
 .secs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.sec{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;transition:.2s}.sec:hover{border-color:var(--brass);transform:translateY(-3px)}
-.sec .im{aspect-ratio:4/3;display:grid;place-items:center;margin-bottom:10px}.sec .im img{max-height:100%;object-fit:contain}.sec b{display:block}.sec span{font-size:13px;color:var(--mute)}
+.sec .im{aspect-ratio:4/3;display:grid;place-items:center;margin-bottom:10px}.sec .im{overflow:hidden}.sec .im img{width:100%;height:100%;object-fit:contain}.sec b{display:block}.sec span{font-size:13px;color:var(--mute)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}.pc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden;transition:.2s}
-.pc:hover{box-shadow:0 12px 28px #0000001a;border-color:#d9c9a5}.pc .im{aspect-ratio:1;padding:14px;display:grid;place-items:center}.pc .im img{max-height:100%;object-fit:contain}
+.pc:hover{box-shadow:0 12px 28px #0000001a;border-color:#d9c9a5}.pc .im{aspect-ratio:1;padding:14px;display:grid;place-items:center}.pc .im{overflow:hidden}.pc .im img{width:100%;height:100%;object-fit:contain}
 .pc .bd{padding:12px 14px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px;flex:1}.pc .cd{font-size:12px;color:var(--brass);font-weight:700;letter-spacing:.04em}.pc h3{font:600 15px/1.3 Inter;margin:0}
 .pc .mt{font-size:12.5px;color:var(--mute)}.pc .btn{margin-top:auto;align-self:flex-start}
 .band{background:var(--ink);color:#efe4cc;border-radius:22px;padding:44px;display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:center}.band p{color:#c7bba3}
@@ -86,7 +127,7 @@ footer{background:var(--ink);color:#cdbfa3;padding:50px 0 20px;font-size:14px}fo
 .hero .w{padding:36px 16px}.feat{margin-top:16px}.band{padding:24px}section{padding:36px 0}.qt td,.qt th{padding:8px}.qt img{width:48px;height:48px}}
 @media(max-width:360px){.grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-@media(max-width:900px){nav.mn .w{overflow-x:auto;scrollbar-width:none}nav.mn .w::-webkit-scrollbar{display:none}nav.mn .btn{display:none}.dd .menu{position:fixed;left:12px;right:12px;top:auto;max-height:60vh;overflow:auto}.hero .w,.pd,.band,.layout{grid-template-columns:1fr}.feat{grid-template-columns:1fr 1fr}.feat div:nth-child(2){border-right:0}.side{position:static;max-height:none}.cards3{grid-template-columns:1fr}footer .w{grid-template-columns:1fr 1fr}.hd{flex-wrap:wrap}.srch{order:3;max-width:none;flex-basis:100%}.hgrid{display:none}form .f{grid-template-columns:1fr}}
+@media(max-width:900px){nav.mn .w{overflow-x:auto;scrollbar-width:none}nav.mn .w::-webkit-scrollbar{display:none}nav.mn .btn{display:none}.dd .menu{position:fixed;left:12px;right:12px;top:auto;max-height:60vh;overflow:auto}.hero .w,.pd,.band,.layout{grid-template-columns:1fr}.feat{grid-template-columns:1fr 1fr}.feat div:nth-child(2){border-right:0}.side{position:static;max-height:none}.cards3{grid-template-columns:1fr}footer .w{grid-template-columns:1fr 1fr}.hd{flex-wrap:wrap}.srch{order:3;max-width:none;flex-basis:100%}.hero .hgrid{display:none}form .f{grid-template-columns:1fr}}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--text:#efe7d8;--text2:#d4cab8;--paper:#100e0b;--card:#1b1813;--line:#332d23;--mute:#a69c8a;--tint:#2c2417;--ink:#0a0907;color-scheme:dark}}:root[data-theme=dark]{--text:#efe7d8;--text2:#d4cab8;--paper:#100e0b;--card:#1b1813;--line:#332d23;--mute:#a69c8a;--tint:#2c2417;--ink:#0a0907;color-scheme:dark}
 .pc .im,.sec .im,.pd .gal,.hgrid div,.post .im img,.qt img{background:var(--well)}input,select,textarea{color:var(--text)}
 nav.mn .w{align-items:center}nav.mn a,.dd>a{display:flex;align-items:center;height:48px}.dd{display:flex}nav.mn a.btn{height:auto}.dd .menu a{height:auto}
@@ -101,7 +142,13 @@ function count(){const n=Object.keys(get()).length;document.querySelectorAll('[d
 function toast(t){let el=document.querySelector('.toast');if(!el){el=document.createElement('div');el.className='toast';document.body.appendChild(el)}el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),1800)}
 function addQ(code,qty){const q=get();q[code]=(q[code]||0)+(parseInt(qty)||1);put(q);toast(code+' added to your quote')}
 document.addEventListener('click',ev=>{const b=ev.target.closest('[data-add]');if(b){ev.preventDefault();const qi=document.getElementById('qty');addQ(b.dataset.add,b.dataset.q?qi.value:1)}});
-document.addEventListener('DOMContentLoaded',()=>{count();if(location.hash=='#search'){const i=document.getElementById('q')||document.getElementById('sq');i&&i.focus()}});
+function plDone(){const p=document.getElementById('pl');if(!p)return;p.classList.add('gone');document.documentElement.classList.add('plx');try{sessionStorage.setItem('se_pl',1)}catch(e){}setTimeout(()=>p.remove(),700)}
+document.addEventListener('DOMContentLoaded',()=>{if(document.documentElement.classList.contains('nopl')){const p=document.getElementById('pl');p&&p.remove();document.documentElement.classList.add('plx')}else{document.getElementById('pl').classList.add('go');setTimeout(plDone,2600)}
+const rv=document.querySelectorAll('.sec,.pc,.card,.post,.band,.trust,.bulk,.person,.sh,.prose>*');rv.forEach((el,i)=>{el.classList.add('rv');el.style.setProperty('--d',(i%6)*60+'ms')});
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{rootMargin:'0px 0px -8% 0px'});rv.forEach(el=>io.observe(el))}else rv.forEach(el=>el.classList.add('in'));
+const hx=document.querySelector('.hero');if(hx&&!matchMedia('(prefers-reduced-motion: reduce)').matches){addEventListener('scroll',()=>{const y=scrollY;if(y<900)hx.style.setProperty('--py',y*0.25+'px')},{passive:true})}
+const hd=document.querySelector('header');addEventListener('scroll',()=>hd.classList.toggle('sc',scrollY>10),{passive:true});
+count();if(location.hash=='#search'){const i=document.getElementById('q')||document.getElementById('sq');i&&i.focus()}});
 function menu(o){const d=document.getElementById('dr'),v=document.querySelector('.ov');d.hidden=v.hidden=!o;document.body.style.overflow=o?'hidden':'';document.querySelectorAll('[data-menu]').forEach(b=>b.setAttribute('aria-expanded',o));if(o)d.querySelector('a').focus()}
 document.addEventListener('click',ev=>{if(ev.target.closest('[data-menu]'))menu(true);else if(ev.target.closest('[data-close]'))menu(false);const s=ev.target.closest('[data-share]');if(s&&navigator.share){ev.preventDefault();navigator.share({title:document.title,url:location.href})}const f=ev.target.closest('[data-filter]');if(f){const sd=document.querySelector('.side');sd.classList.toggle('open');f.setAttribute('aria-expanded',sd.classList.contains('open'))}});
 document.addEventListener('keydown',ev=>{if(ev.key=='Escape')menu(false)});
@@ -123,7 +170,11 @@ def page(path, title, body, desc='', nav=''):
     b = '../' * depth
     cats_nav = ''.join(f'<a href="{b}category/{slug(s)}.html" class="{"on" if nav == s else ""}">{e(s)}</a>' for s in SECTIONS)
     html_ = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(title)}</title><meta name="description" content="{e(desc or CO['tag'])}">{FONTS}<meta name="theme-color" content="#14110d"><script>try{{const t=localStorage.getItem("se_theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script><link rel="manifest" href="{b}manifest.webmanifest"><link rel="icon" href="{b}icon-192.png"><link rel="apple-touch-icon" href="{b}icon-192.png"><link rel="stylesheet" href="{b}style.css"><script>{JS}</script></head><body>
+<title>{e(title)}</title><meta name="description" content="{e(desc or CO['tag'])}">{FONTS}<meta name="theme-color" content="#14110d"><script>try{{const t=localStorage.getItem("se_theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}try{{if(sessionStorage.getItem("se_pl")||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("nopl")}}catch(e){{document.documentElement.classList.add("nopl")}}</script><link rel="manifest" href="{b}manifest.webmanifest"><link rel="icon" href="{b}icon-192.png"><link rel="apple-touch-icon" href="{b}icon-192.png"><link rel="stylesheet" href="{b}style.css"><script>{JS}</script></head><body>
+<div id="pl" aria-hidden="true"><div class="pl-room"></div><div class="pl-frame"><div class="pl-door"><div class="pl-panel"></div><div class="pl-panel b"></div><div class="pl-plate"><div class="pl-lever"></div><div class="pl-key"></div></div>
+<svg class="pl-hand" viewBox="0 0 160 100"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c9a2"/><stop offset="1" stop-color="#c98f63"/></linearGradient><linearGradient id="sl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1c1712"/><stop offset="1" stop-color="#3a3026"/></linearGradient></defs><rect x="-60" y="30" width="78" height="52" rx="14" fill="url(#sl)"/><rect x="10" y="28" width="12" height="56" rx="5" fill="#e9e1d2"/><path d="M20 36c18-8 40-10 62-8l46 4c8 1 13 5 13 10s-5 9-13 9l-36-1c6 4 8 9 6 14-3 7-10 10-18 10H44c-14 0-24-10-24-22z" fill="url(#sk)"/><path d="M86 44l42 2M84 52l40 1M78 60l34 0" stroke="#b77d55" stroke-width="2.2" stroke-linecap="round" opacity=".55"/><path d="M118 34c6 0 10 3 10 7" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="128" cy="40" rx="4" ry="3" fill="#f6dccb" opacity=".8"/></svg></div></div>
+<div class="pl-name">Sameer Exports<small>Since 1994 · Aligarh</small></div><button class="pl-skip" onclick="plDone()">Skip</button></div>
+<div class="ambient"></div>
 <div class="top"><div class="w"><span>ISO 9001 certified manufacturer &amp; exporter · Aligarh, India · Since 1994</span><span>{CO['phone']} · <a href="mailto:{CO['email']}">{CO['email']}</a></span></div></div>
 <header><div class="hd w"><button class="hb" aria-label="Open menu" aria-controls="dr" aria-expanded="false" data-menu>☰</button><a class="logo" href="{b}index.html"><i></i><span>Sameer Exports<small>Brass Builders Hardware</small></span></a>
 <form class="srch" action="{b}shop.html"><input id="sq" type="search" enterkeyhint="search" name="q" placeholder="Search products or codes" aria-label="Search products" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sug" data-base="{b}"><div class="sug" id="sug" role="listbox" hidden></div><button class="btn">Search</button></form>
@@ -144,6 +195,14 @@ def page(path, title, body, desc='', nav=''):
     open(f, 'w', encoding='utf-8').write(html_)
 
 
+TRUST = '<div class="trust"><div><b>ISO 9001</b><span>Certified quality</span></div><div><b>Since 1994</b><span>Aligarh manufacturer</span></div><div><b>Custom finishes</b><span>14 finish options</span></div><div><b>Export packing</b><span>Sea &amp; air freight</span></div><div><b>WhatsApp support</b><span>Fast replies</span></div></div>'
+BULK = '<div class="bulk"><div><h2>Buying in bulk?</h2><p>Send your product codes and quantities. We reply with price, MOQ, packing and lead time for your market.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="{B}quote.html">Request bulk quote</a><a class="btn wab" target="_blank" rel="noopener" href="https://wa.me/919758155555?text=Bulk%20enquiry">WhatsApp us</a></div></div>'
+
+
+def row(c, ps, href):
+    return f'<div class="rng"><div class="sh"><div><h2>{e(c)}</h2><span class="mt">{len(ps)} designs</span></div><a href="{href}">View all →</a></div><div class="rowx">{"".join(card(p) for p in ps[:10])}</div></div>'
+
+
 def card(p):
     meta = ' · '.join(x for x in (p['size'], p['finish']) if x)
     return f"""<article class="pc"><a class="im" href="{{B}}product/{p['slug']}.html"><img loading="lazy" src="{{B}}img/t/{p['code']}.jpg" alt="{e(p['name'])} {p['code']}"></a>
@@ -162,7 +221,8 @@ brass_cats = ''.join(f"""<a class="sec" href="{{B}}category/{slug(c)}.html"><div
 home = f"""<div class="hero"><div class="w"><div><span class="kick">Manufacturer &amp; exporter · Aligarh, India</span>
 <h1>Solid brass hardware, <em>cast and finished</em> by hand since 1994.</h1><p>Door knockers, lever handles, hinges, cabinet fittings and wrought iron. Over 900 catalogue designs, made to order for importers, wholesalers and builders worldwide.</p>
 <p style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="{{B}}shop.html">Browse the catalogue</a><a class="btn o" href="{{B}}export.html">Bulk &amp; export orders</a></p></div>
-<div class="hgrid">{hero_imgs}</div></div></div>
+<div class="h3d"><canvas id="knock" aria-label="Animated 3D brass door knocker. Drag to rotate." role="img"></canvas><div class="hgrid">{hero_imgs}</div><span class="h3hint">Drag to rotate</span></div></div></div>
+<script type="importmap">{{"imports":{{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}}}</script><script type="module" src="{{B}}knocker3d.js"></script>
 <div class="w"><div class="feat"><div><b>ISO 9001 certified</b><span>Strict quality control</span></div><div><b>900+ designs</b><span>Brass, iron, aluminium, wood</span></div><div><b>14 finishes</b><span>BPL, SCP, antique, powder coat</span></div><div><b>Exporting worldwide</b><span>UK, US, EU, Canada, Australia</span></div></div></div>
 <section><div class="w"><div class="sh"><div><span class="kick">Catalogue</span><h2>Shop by range</h2></div><a href="{{B}}shop.html">View all products →</a></div><div class="secs">{sec_tiles}</div></div></section>
 <section style="padding-top:0"><div class="w"><div class="sh"><div><span class="kick">Brass hardware</span><h2>Popular brass ranges</h2></div><a href="{{B}}category/brass-hardware.html">All brass →</a></div><div class="secs">{brass_cats}</div></div></section>
@@ -177,25 +237,25 @@ idx = [[p['code'], p['name'], p['category'], p['section'], p['size'], p['finish'
 side = ''.join(f'<h4>{e(s)}</h4>' + ''.join(f'<a href="#" data-c="{e(c)}">{e(c)} <span>{len(ps)}</span></a>' for c, ps in cs.items()) for s, cs in SECTIONS.items())
 fins = sorted({p['finish'] for p in P if p['finish']})
 shop = f"""<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / All products</div><div class="layout"><aside class="side"><a href="#" data-c="" class="on">All products <span>{len(P)}</span></a>{side}</aside>
-<div><div class="bar"><button class="btn o s fbtn" data-filter aria-expanded="false">Filter by range</button><input id="q" type="search" enterkeyhint="search" placeholder="Search name or code" style="flex:1;min-width:200px"><select id="fin"><option value="">All finishes</option>{''.join(f'<option>{e(f)}</option>' for f in fins)}</select><span id="n" class="mt"></span></div><div class="grid" id="g"></div><p style="text-align:center"><button class="btn o" id="more">Load more</button></p></div></div></div>
+<div><div class="bar"><button class="btn o s fbtn" data-filter aria-expanded="false">Filter by range</button><input id="q" type="search" enterkeyhint="search" placeholder="Search name or code" style="flex:1;min-width:200px"><select id="sort" aria-label="Sort"><option value="">Sort: catalogue order</option><option value="az">Name A to Z</option><option value="za">Name Z to A</option><option value="code">Product code</option></select><select id="fin" aria-label="Finish"><option value="">All finishes</option>{''.join(f'<option>{e(f)}</option>' for f in fins)}</select><span id="n" class="mt"></span></div><div class="grid" id="g"></div><p style="text-align:center"><button class="btn o" id="more">Load more</button></p></div></div></div>
 <script>const D={json.dumps(idx)};let lim=48,cat='';const qs=new URLSearchParams(location.search);const qi=document.getElementById('q');qi.value=qs.get('q')||'';cat=qs.get('cat')||'';
 function esc(s){{return s.replace(/[&<>"]/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}}[c]))}}
-function render(){{const q=qi.value.toLowerCase().trim(),f=document.getElementById('fin').value;const r=D.filter(p=>(!cat||p[2]==cat)&&(!f||p[5]==f)&&(!q||(p[0]+' '+p[1]+' '+p[2]+' '+p[3]).toLowerCase().includes(q)));
-document.getElementById('n').textContent=r.length+' products';document.getElementById('g').innerHTML=r.slice(0,lim).map(p=>`<article class="pc"><a class="im" href="product/${{p[6]}}.html"><img loading="lazy" src="img/t/${{p[0]}}.jpg" alt="${{esc(p[1])}}"></a><div class="bd"><span class="cd">${{p[0]}}</span><h3><a href="product/${{p[6]}}.html">${{esc(p[1])}}</a></h3><span class="mt">${{esc([p[4],p[5]].filter(Boolean).join(' · '))}}</span><button class="btn s" data-add="${{p[0]}}">Add to quote</button></div></article>`).join('');
+function render(){{const q=qi.value.toLowerCase().trim(),f=document.getElementById('fin').value;let r=D.filter(p=>(!cat||p[2]==cat)&&(!f||p[5]==f)&&(!q||(p[0]+' '+p[1]+' '+p[2]+' '+p[3]).toLowerCase().includes(q)));
+const so=document.getElementById('sort').value;if(so)r=[...r].sort((a,b)=>so=='code'?parseInt(a[0].slice(3))-parseInt(b[0].slice(3)):so=='az'?a[1].localeCompare(b[1]):b[1].localeCompare(a[1]));document.getElementById('n').textContent='Showing '+Math.min(lim,r.length)+' of '+r.length+' products';document.getElementById('g').innerHTML=r.slice(0,lim).map(p=>`<article class="pc"><a class="im" href="product/${{p[6]}}.html"><img loading="lazy" src="img/t/${{p[0]}}.jpg" alt="${{esc(p[1])}}"></a><div class="bd"><span class="cd">${{p[0]}}</span><h3><a href="product/${{p[6]}}.html">${{esc(p[1])}}</a></h3><span class="mt">${{esc([p[4],p[5]].filter(Boolean).join(' · '))}}</span><button class="btn s" data-add="${{p[0]}}">Add to quote</button></div></article>`).join('');
 document.getElementById('more').style.display=r.length>lim?'':'none';document.querySelectorAll('.side a').forEach(a=>a.classList.toggle('on',a.dataset.c==cat))}}
-document.querySelectorAll('.side a').forEach(a=>a.onclick=ev=>{{ev.preventDefault();cat=a.dataset.c;lim=48;render();document.querySelector('.side').classList.remove('open');scrollTo(0,0)}});qi.oninput=()=>{{lim=48;render()}};document.getElementById('fin').onchange=render;document.getElementById('more').onclick=()=>{{lim+=48;render()}};render();</script>"""
+document.querySelectorAll('.side a').forEach(a=>a.onclick=ev=>{{ev.preventDefault();cat=a.dataset.c;lim=48;render();document.querySelector('.side').classList.remove('open');scrollTo(0,0)}});qi.oninput=()=>{{lim=48;render()}};document.getElementById('fin').onchange=render;document.getElementById('sort').onchange=()=>{{lim=48;render()}};document.getElementById('more').onclick=()=>{{lim+=48;render()}};new IntersectionObserver(es=>{{if(es[0].isIntersecting&&document.getElementById('more').style.display!='none'){{lim+=48;render()}}}},{{rootMargin:'600px'}}).observe(document.getElementById('more'));render();</script>"""
 page('shop.html', 'All Products | Sameer Exports', shop, 'Browse the full Sameer Exports catalogue of brass, iron, aluminium and wooden hardware.', 'shop')
 
 # ---------- section + category pages
 for s, cs in SECTIONS.items():
     tiles = ''.join(f"""<a class="sec" href="{slug(c)}.html"><div class="im"><img loading="lazy" src="{{B}}img/t/{ps[0]['code']}.jpg" alt=""></div><b>{e(c)}</b><span>{len(ps)} products</span></a>""" for c, ps in cs.items())
-    allp = ''.join(card(p) for ps in cs.values() for p in ps)
-    body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / {e(s)}</div><section style="padding-top:20px"><h1>{e(s)}</h1><div class="secs">{tiles}</div></section><section style="padding-top:0"><div class="sh"><h2>All {e(s.lower())}</h2></div><div class="grid">{allp}</div></section></div>'
+    rows = ''.join(row(c, ps, f'{slug(c)}.html') for c, ps in cs.items() if slug(c) != slug(s))
+    body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / {e(s)}</div><section style="padding-top:20px"><h1>{e(s)}</h1><p class="mt">{sum(len(v) for v in cs.values())} designs across {len(cs)} ranges.</p><div class="secs">{tiles}</div>{TRUST}</section><section style="padding-top:0">{rows}{BULK}</section></div>'
     page(f'category/{slug(s)}.html', f'{s} | Sameer Exports', body, f'{s} manufactured and exported by Sameer Exports, Aligarh.', s)
     for c, ps in cs.items():
         if slug(c) == slug(s):
             continue
-        body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / <a href="{slug(s)}.html">{e(s)}</a> / {e(c)}</div><section style="padding-top:20px"><div class="sh"><div><h1>{e(c)}</h1><p class="mt">{len(ps)} designs. All items are made to order; add codes to your quote list for pricing.</p></div></div><div class="grid">{"".join(card(p) for p in ps)}</div></section></div>'
+        body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / <a href="{slug(s)}.html">{e(s)}</a> / {e(c)}</div><section style="padding-top:20px"><div class="sh"><div><h1>{e(c)}</h1><p class="mt">{len(ps)} designs. All items are made to order; add codes to your quote list for pricing.</p></div></div><div class="grid">{"".join(card(p) for p in ps)}</div>{BULK}</section></div>'
         page(f'category/{slug(c)}.html', f'{c} | Sameer Exports', body, f'{c}: {len(ps)} designs from Sameer Exports, Aligarh, India.', s)
 
 # ---------- product pages
@@ -263,6 +323,7 @@ for sl, t, cs, body in POSTS:
 page('blog/index.html', 'Blog | Sameer Exports', f'<div class="w"><section><span class="kick">Guides</span><h1>Hardware guides &amp; news</h1><div class="blog">{cards}</div></section></div>')
 
 open(os.path.join(OUT, 'style.css'), 'w').write(CSS)
+import shutil; shutil.copy(os.path.join(ROOT, 'knocker3d.js'), os.path.join(OUT, 'knocker3d.js'))
 json.dump([[p['code'], p['name'], p['category'], p['slug']] for p in P], open(os.path.join(OUT, 'search.json'), 'w'))
 json.dump({"name": "Sameer Exports", "short_name": "Sameer", "start_url": "index.html", "display": "standalone", "background_color": "#faf7f1", "theme_color": "#14110d", "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}]}, open(os.path.join(OUT, 'manifest.webmanifest'), 'w'))
 from PIL import Image, ImageDraw
