@@ -44,7 +44,7 @@ for r in R:
     except Exception:
         a = mm
     # sanity: if grabcut ate too much, fall back to seg mask
-    if a.sum() < 0.55 * mm.sum():
+    if a.sum() < 0.88 * mm.sum() or a.sum() > 1.12 * mm.sum() and False:
         a = mm
     cnts, _ = cv2.findContours(mm, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if cnts:
@@ -60,8 +60,16 @@ for r in R:
             if st[i, 4] > 0.04 * st[big, 4]: keep[lab == i] = 255
         a = keep
     a = fillholes(a)
+    cn, _ = cv2.findContours(a, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    rect_mode = False
+    if cn:
+        hl = cv2.convexHull(np.vstack(cn)); hh = np.zeros_like(a); cv2.fillPoly(hh, [hl], 255)
+        sat = cv2.cvtColor(sm, cv2.COLOR_BGR2HSV)[:, :, 1][mm > 0].mean()
+        if sat < 70 and (a > 0).sum() / max((hh > 0).sum(), 1) < 0.8 or sat < 70 and (a > 0).sum() < 0.85 * (mm > 0).sum():
+            # ponytail: silver-on-paper defeats the mask; show a whitened rectangle instead of a broken cutout
+            ys_, xs_ = np.where(mm > 0); a = np.zeros_like(a); a[ys_.min():ys_.max() + 1, xs_.min():xs_.max() + 1] = 255; rect_mode = True
     alpha = cv2.resize(a, (Wd, H), interpolation=cv2.INTER_LINEAR)
-    alpha = cv2.GaussianBlur(alpha, (0, 0), 1.6)
+    alpha = cv2.GaussianBlur(alpha, (0, 0), 1.6) if not rect_mode else alpha
     alpha = np.clip((alpha.astype(np.float32) - 40) * (255 / 175), 0, 255).astype(np.uint8)
     # white balance from paper (outside dilated mask)
     paper = im[cv2.dilate(mk, np.ones((41, 41), np.uint8)) == 0]
@@ -70,6 +78,7 @@ for r in R:
         p = np.median(paper, axis=0)
         gain = np.clip(p.max() / p, 0.85, 1.35)
         f = f * gain
+        if rect_mode: f = f * (250.0 / max(float((p * gain).mean()), 1))
     f = np.clip(f, 0, 255).astype(np.uint8)
     f = cv2.fastNlMeansDenoisingColored(f, None, 3, 3, 5, 15)
     lab_ = cv2.cvtColor(f, cv2.COLOR_BGR2LAB)
@@ -95,6 +104,6 @@ for r in R:
     al = (alpha.astype(np.float32) / 255)[:, :, None]
     white = (f * al + 255 * (1 - al)).astype(np.uint8)
     cv2.imwrite(f'{w}/products/white/{code}.jpg', white, [cv2.IMWRITE_JPEG_QUALITY, 92])
-    flags[code] = dict(w=int(f.shape[1]), h=int(f.shape[0]), fill=round(float((alpha > 128).mean()), 2), shared=bool(r.get('shared')))
+    flags[code] = dict(rect=rect_mode, w=int(f.shape[1]), h=int(f.shape[0]), fill=round(float((alpha > 128).mean()), 2), shared=bool(r.get('shared')))
 json.dump(flags, open(f'{w}/products/flags.json', 'w'))
 print(len(flags), 'done')
