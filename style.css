@@ -32,7 +32,7 @@ header{background:var(--glass)!important;backdrop-filter:blur(18px) saturate(1.4
 .pc .im,.sec .im{border-radius:12px;margin:8px;background:var(--well)}.pc .im img,.sec .im img{transition:transform .5s cubic-bezier(.2,.7,.2,1)}.pc:hover .im img,.sec:hover .im img{transform:scale(1.06) rotate(-1deg)}
 .band{background:linear-gradient(135deg,rgba(20,17,13,.92),rgba(43,34,22,.88))!important;backdrop-filter:blur(14px);border:1px solid #ffffff14}
 .btn{box-shadow:0 6px 18px rgba(184,137,43,.35);transition:transform .2s,box-shadow .2s,background .2s}.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(184,137,43,.45)}.btn.o{box-shadow:none}
-@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important}#pl{display:none}}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important}.pl-door,.pl-lever,.pl-hand{transition:none!important;animation:none!important}#pl.go .pl-door{transform:none}.pl-hand{display:none}#pl.go .pl-room{opacity:.6}}
 
 .h3d{position:relative;aspect-ratio:1;max-height:560px;width:100%}.h3d canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .8s;cursor:grab;touch-action:pan-y}.h3d.ready canvas{opacity:1}.h3d.ready .hgrid{opacity:0;pointer-events:none}.h3d .hgrid{position:absolute;inset:8% 0;transition:opacity .6s}
 .h3d::before{content:"";position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,#d9b45a33,transparent 65%)}.h3hint{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:12px;color:#a8997c;opacity:0;transition:opacity .6s}.h3d.ready .h3hint{opacity:1}
