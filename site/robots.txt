@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /quote.html
+
+Sitemap: https://lilkunal.github.io/sameerexports/sitemap.xml

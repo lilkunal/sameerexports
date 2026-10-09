@@ -10,6 +10,17 @@ CO = dict(name='Sameer Exports', tag='Brass Builders Hardware & Art Ware since 1
           phone='+91-571-2513295', fax='+91-571-2520541', email='info@brass-builders.com',
           owner='Sanjeev Agarwal', wa='919758155555', gst='09ACZPA8884B1Z2', iec='0694001716')
 YEAR = datetime.date.today().year
+CFG = json.load(open(os.path.join(ROOT, 'site_config.json'), encoding='utf-8'))
+URL = CFG['url'].rstrip('/') + '/'
+GA = CFG.get('ga4_id', '').strip()
+GSC = CFG.get('gsc_verification', '').strip()
+W3F = CFG.get('web3forms_key', '').strip()
+ORG = {"@context": "https://schema.org", "@type": ["Organization", "LocalBusiness"], "@id": URL + "#org", "name": "Sameer Exports", "url": URL,
+       "logo": URL + "icon-512.png", "image": URL + "img/p/SE-3001.jpg", "description": "Manufacturer and exporter of brass, iron and aluminium builders hardware and art ware from Aligarh, India, since 1994.",
+       "foundingDate": "1994", "founder": {"@type": "Person", "name": "Sanjeev Agarwal"}, "telephone": "+91-571-2513295", "email": "info@brass-builders.com",
+       "address": {"@type": "PostalAddress", "streetAddress": "C-235, Ramghat Road, UPSIDC Sector 2, Talanagri", "addressLocality": "Aligarh", "addressRegion": "Uttar Pradesh", "postalCode": "202002", "addressCountry": "IN"},
+       "geo": {"@type": "GeoCoordinates", "latitude": 27.9303815, "longitude": 78.1375334}, "openingHours": "Mo-Sa 08:30-18:00", "areaServed": ["IN", "GB", "US", "MX", "DE", "CA", "AU"],
+       "taxID": "09ACZPA8884B1Z2"}
 e = html.escape
 
 
@@ -104,7 +115,7 @@ section{padding:56px 0}.sh{display:flex;justify-content:space-between;align-item
 .pd{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:26px 0 50px}.pd .gal{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px;aspect-ratio:1;display:grid;place-items:center}.pd .gal img{max-height:100%;object-fit:contain}
 .spec{width:100%;border-collapse:collapse;margin:18px 0}.spec td{padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}.spec td:first-child{color:var(--mute);width:40%}
 .qty{display:flex;gap:10px;align-items:center;margin:18px 0}.qty input{width:90px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font:inherit}
-.note{background:var(--tint);border-radius:12px;padding:14px 16px;font-size:14px}.prose{max-width:760px}.prose p,.prose li{color:var(--text2)}.prose h2{margin-top:1.4em}
+.note.ok{border:1px solid #1fa85566;background:#1fa85514}.note{background:var(--tint);border-radius:12px;padding:14px 16px;font-size:14px}.prose{max-width:760px}.prose p,.prose li{color:var(--text2)}.prose h2{margin-top:1.4em}
 .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
 .blog{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}.post{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}.post .im{background:#f3eee4;aspect-ratio:16/9;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:14px}.post .im img{object-fit:contain;height:100%;width:100%;background:var(--card);border-radius:8px}.post .bd{padding:18px}
 form .f{display:grid;grid-template-columns:1fr 1fr;gap:12px}form label{display:flex;flex-direction:column;font-size:13px;font-weight:600;gap:5px}form input,form textarea,form select{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-weight:400;background:var(--card)}form .full{grid-column:1/-1}
@@ -136,6 +147,9 @@ nav.mn .w{align-items:center}nav.mn a,.dd>a{display:flex;align-items:center;heig
 """
 
 JS = """
+const W3F='__W3F__';function track(n,p){try{window.gtag&&gtag('event',n,p||{})}catch(e){}}
+async function sendLead(subject,fields){if(!W3F)return false;const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({access_key:W3F,subject,from_name:'Sameer Exports website'},fields))});const j=await r.json().catch(()=>({}));if(!r.ok||!j.success)throw new Error(j.message||'Send failed');track('generate_lead',{form:subject});return true}
+document.addEventListener('click',ev=>{const a=ev.target.closest('a[href*="wa.me"]');if(a)track('whatsapp_click',{page:location.pathname});const t=ev.target.closest('a[href^="tel:"]');if(t)track('call_click',{page:location.pathname})});
 const K='se_quote';const get=()=>{try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){return{}}};
 const put=q=>{try{localStorage.setItem(K,JSON.stringify(q))}catch(e){}count()};
 function count(){const n=Object.keys(get()).length;document.querySelectorAll('[data-qc]').forEach(b=>b.textContent=n)}
@@ -162,15 +176,36 @@ document.addEventListener('click',ev=>{if(!ev.target.closest('[data-theme-toggle
 """
 
 WA_SVG = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>'
+JS = JS.replace('__W3F__', W3F)
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
 
-def page(path, title, body, desc='', nav=''):
+def head_extra(path, title, desc, image, ld):
+    canon = URL + ('' if path == 'index.html' else path)
+    d = e(desc or CO['tag'])
+    h = (f'<link rel="canonical" href="{canon}"><meta property="og:type" content="website"><meta property="og:site_name" content="Sameer Exports">'
+         f'<meta property="og:title" content="{e(title)}"><meta property="og:description" content="{d}"><meta property="og:url" content="{canon}">'
+         f'<meta property="og:image" content="{URL}{image}"><meta name="twitter:card" content="summary_large_image">')
+    if path == '404.html':
+        h += f'<base href="{URL}"><meta name="robots" content="noindex">'
+    if path == 'quote.html':
+        h += '<meta name="robots" content="noindex">'
+    if GSC and path == 'index.html':
+        h += f'<meta name="google-site-verification" content="{e(GSC)}">'
+    if GA:
+        h += (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA}"></script>'
+              f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{GA}");</script>')
+    for block in (ld or []):
+        h += f'<script type="application/ld+json">{json.dumps(block)}</script>'
+    return h
+
+
+def page(path, title, body, desc='', nav='', image='img/p/SE-3001.jpg', ld=None):
     depth = path.count('/')
     b = '../' * depth
     cats_nav = ''.join(f'<a href="{b}category/{slug(s)}.html" class="{"on" if nav == s else ""}">{e(s)}</a>' for s in SECTIONS)
     html_ = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(title)}</title><meta name="description" content="{e(desc or CO['tag'])}">{FONTS}<meta name="theme-color" content="#14110d"><script>try{{const t=localStorage.getItem("se_theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}{"" if path == "index.html" else "document.documentElement.classList.add('nopl');"}</script><link rel="manifest" href="{b}manifest.webmanifest"><link rel="icon" href="{b}icon-192.png"><link rel="apple-touch-icon" href="{b}icon-192.png"><link rel="stylesheet" href="{b}style.css"><script>{JS}</script></head><body>
+<title>{e(title)}</title><meta name="description" content="{e(desc or CO['tag'])}">{head_extra(path, title, desc, image, ld)}{FONTS}<meta name="theme-color" content="#14110d"><script>try{{const t=localStorage.getItem("se_theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}{"" if path == "index.html" else "document.documentElement.classList.add('nopl');"}</script><link rel="manifest" href="{b}manifest.webmanifest"><link rel="icon" href="{b}icon-192.png"><link rel="apple-touch-icon" href="{b}icon-192.png"><link rel="stylesheet" href="{b}style.css"><script>{JS}</script></head><body>
 <div id="pl" aria-hidden="true"><div class="pl-room"></div><div class="pl-frame"><div class="pl-door"><div class="pl-panel"></div><div class="pl-panel b"></div><div class="pl-plate"><div class="pl-lever"></div><div class="pl-key"></div></div>
 <svg class="pl-hand" viewBox="0 0 160 100"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c9a2"/><stop offset="1" stop-color="#c98f63"/></linearGradient><linearGradient id="sl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1c1712"/><stop offset="1" stop-color="#3a3026"/></linearGradient></defs><rect x="-60" y="30" width="78" height="52" rx="14" fill="url(#sl)"/><rect x="10" y="28" width="12" height="56" rx="5" fill="#e9e1d2"/><path d="M20 36c18-8 40-10 62-8l46 4c8 1 13 5 13 10s-5 9-13 9l-36-1c6 4 8 9 6 14-3 7-10 10-18 10H44c-14 0-24-10-24-22z" fill="url(#sk)"/><path d="M86 44l42 2M84 52l40 1M78 60l34 0" stroke="#b77d55" stroke-width="2.2" stroke-linecap="round" opacity=".55"/><path d="M118 34c6 0 10 3 10 7" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="128" cy="40" rx="4" ry="3" fill="#f6dccb" opacity=".8"/></svg></div></div>
 <div class="pl-name">Sameer Exports<small>Since 1994 · Aligarh</small></div><button class="pl-skip" onclick="plDone()">Skip</button></div>
@@ -230,7 +265,7 @@ home = f"""<div class="hero"><div class="w"><div><span class="kick">Manufacturer
 <section style="padding-top:0"><div class="w"><div class="band"><div><span class="kick">Since 1994</span><h2>Sand cast, forged, polished and lacquered in Aligarh</h2><p>Sameer Exports was started in 1994 by Mr. Sanjeev Agarwal under the direction of Er. S.P. Agarwal. Production combines traditional sand casting with modern forging machines, and every piece is finished, polished, lacquered and packed to international buyer standards.</p><a class="btn" href="{{B}}about.html">Our story</a></div>
 <div class="stats"><div><b>1994</b>Established</div><div><b>{len(P)}+</b>Catalogue designs</div><div><b>{len(CATS)}</b>Product ranges</div><div><b>6+</b>Export countries</div></div></div></div></section>
 <section style="padding-top:0"><div class="w"><div class="sh"><div><span class="kick">How ordering works</span><h2>Request a quote in three steps</h2></div></div><div class="cards3"><div class="card"><h3>1. Build your list</h3><p>Add any catalogue code to your quote list, with the quantity and finish you need.</p></div><div class="card"><h3>2. Send the enquiry</h3><p>Submit the list. We reply with pricing, MOQ, packing and lead time for your market.</p></div><div class="card"><h3>3. Sample and ship</h3><p>Approve samples, confirm the order and we dispatch by sea or air freight.</p></div></div></div></section>"""
-page('index.html', 'Sameer Exports | Brass Builders Hardware Manufacturer, Aligarh', home, 'Manufacturer and exporter of brass door hardware, iron hardware, knobs and art ware from Aligarh, India since 1994.')
+page('index.html', 'Sameer Exports | Brass Hardware Manufacturer & Exporter, Aligarh, India', home, 'Manufacturer and exporter of brass door hardware, iron hardware, knobs and art ware from Aligarh, India since 1994.', ld=[ORG, {'@context': 'https://schema.org', '@type': 'WebSite', 'url': URL, 'name': 'Sameer Exports', 'potentialAction': {'@type': 'SearchAction', 'target': URL + 'shop.html?q={search_term_string}', 'query-input': 'required name=search_term_string'}}])
 
 # ---------- shop (client side filter over embedded index)
 idx = [[p['code'], p['name'], p['category'], p['section'], p['size'], p['finish'], p['slug']] for p in P]
@@ -251,25 +286,27 @@ for s, cs in SECTIONS.items():
     tiles = ''.join(f"""<a class="sec" href="{slug(c)}.html"><div class="im"><img loading="lazy" src="{{B}}img/t/{ps[0]['code']}.jpg" alt=""></div><b>{e(c)}</b><span>{len(ps)} products</span></a>""" for c, ps in cs.items())
     rows = ''.join(row(c, ps, f'{slug(c)}.html') for c, ps in cs.items() if slug(c) != slug(s))
     body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / {e(s)}</div><section style="padding-top:20px"><h1>{e(s)}</h1><p class="mt">{sum(len(v) for v in cs.values())} designs across {len(cs)} ranges.</p><div class="secs">{tiles}</div>{TRUST}</section><section style="padding-top:0">{rows}{BULK}</section></div>'
-    page(f'category/{slug(s)}.html', f'{s} | Sameer Exports', body, f'{s} manufactured and exported by Sameer Exports, Aligarh.', s)
+    page(f'category/{slug(s)}.html', f'{s} Manufacturer & Exporter, Aligarh India | Sameer Exports', body, f'{s} manufactured and exported by Sameer Exports, Aligarh.', s)
     for c, ps in cs.items():
         if slug(c) == slug(s):
             continue
         body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / <a href="{slug(s)}.html">{e(s)}</a> / {e(c)}</div><section style="padding-top:20px"><div class="sh"><div><h1>{e(c)}</h1><p class="mt">{len(ps)} designs. All items are made to order; add codes to your quote list for pricing.</p></div></div><div class="grid">{"".join(card(p) for p in ps)}</div>{BULK}</section></div>'
-        page(f'category/{slug(c)}.html', f'{c} | Sameer Exports', body, f'{c}: {len(ps)} designs from Sameer Exports, Aligarh, India.', s)
+        page(f'category/{slug(c)}.html', f'{c} Manufacturer & Exporter in India | Sameer Exports', body, f'{c}: {len(ps)} designs from Sameer Exports, Aligarh, India.', s)
 
 # ---------- product pages
 for i, p in enumerate(P):
     rel = [q for q in CATS[p['category']] if q is not p][:8]
     rows = ''.join(f'<tr><td>{k}</td><td>{e(v)}</td></tr>' for k, v in [('Product code', p['code']), ('Range', p['category']), ('Material group', p['section']), ('Size', p['size']), ('Finish', p['finish'])] if v)
-    ld = json.dumps({"@context": "https://schema.org", "@type": "Product", "name": p['name'], "sku": p['code'], "category": p['category'], "brand": {"@type": "Brand", "name": "Sameer Exports"}, "image": f"img/p/{p['code']}.jpg"})
+    ldp = {"@context": "https://schema.org", "@type": "Product", "name": p['name'], "sku": p['code'], "mpn": p['code'], "category": p['category'], "brand": {"@type": "Brand", "name": "Sameer Exports"}, "manufacturer": {"@id": URL + "#org"}, "image": f"{URL}img/p/{p['code']}.jpg", "description": f"{p['name']} ({p['code']}) from the {p['category']} range. {p['size']} {p['finish']}. Made to order by Sameer Exports, Aligarh, India.".replace('  ', ' ')}
+    if p['finish']: ldp["material"] = p['finish']
+    ldb = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": URL + u} for i, (n, u) in enumerate([("Home", ""), (p['section'], f"category/{slug(p['section'])}.html"), (p['category'], f"category/{p['cslug']}.html"), (p['code'], f"product/{p['slug']}.html")])]}
     body = f"""<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / <a href="{{B}}category/{slug(p['section'])}.html">{e(p['section'])}</a> / <a href="{{B}}category/{p['cslug']}.html">{e(p['category'])}</a> / {p['code']}</div>
 <div class="pd"><div class="gal"><img src="{{B}}img/p/{p['code']}.jpg" alt="{e(p['name'])}"></div><div><span class="kick">{p['code']}</span><h1>{e(p['name'])}</h1><p class="mt">{e(p['category'])}</p><table class="spec">{rows}</table>
 <div class="qty"><label for="qty">Qty</label><input id="qty" type="number" inputmode="numeric" min="1" value="100"><button class="btn" data-add="{p['code']}" data-q="1">Add to quote list</button></div>
 <div class="note">Made to order. Other finishes and sizes are usually possible. Pricing, MOQ and lead time are sent with your quote.</div>
 <p style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn s wab" target="_blank" rel="noopener" href="https://wa.me/{CO['wa']}?text={quote_plus(f"Hello, I am interested in {p['code']} {p['name']}. Please send price and MOQ.")}">{WA_SVG} Ask on WhatsApp</a><button class="btn o s" data-share>Share</button><a class="btn o s" href="mailto:{CO['email']}?subject=Enquiry%20{p['code']}">Email about this item</a></p></div></div>
-<section style="padding-top:0"><div class="sh"><h2>More {e(p['category'].lower())}</h2></div><div class="grid">{''.join(card(q) for q in rel)}</div></section></div><script type="application/ld+json">{ld}</script>"""
-    page(f"product/{p['slug']}.html", f"{p['code']} {p['name']} | Sameer Exports", body, f"{p['name']} ({p['code']}), {p['category']}. {p['size']} {p['finish']}".strip())
+<section style="padding-top:0"><div class="sh"><h2>More {e(p['category'].lower())}</h2></div><div class="grid">{''.join(card(q) for q in rel)}</div></section></div>"""
+    page(f"product/{p['slug']}.html", f"{p['name']} {p['code']} | {p['category']} | Sameer Exports", body, f"{p['name']} ({p['code']}) from the {p['category']} range. {p['size']} {p['finish']}. Manufacturer and exporter, Aligarh, India. Request a quote.".replace('  ', ' ').replace('. .', '.'), image=f"img/p/{p['code']}.jpg", ld=[ldp, ldb])
 
 # ---------- quote list (cart)
 qidx = {p['code']: [p['name'], p['slug'], p['finish']] for p in P}
@@ -277,10 +314,10 @@ quote = f"""<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a>
 <table class="qt"><thead><tr><th></th><th>Product</th><th>Qty</th><th></th></tr></thead><tbody id="rows"></tbody></table><p id="empty" class="note" style="display:none">Your list is empty. <a href="shop.html" style="color:var(--brass)">Browse products</a>.</p>
 <h2 style="margin-top:36px">Your details</h2><form id="qf"><div class="f"><label>Name<input required name="name" autocomplete="name"></label><label>Company<input name="company" autocomplete="organization"></label><label>Email<input required type="email" name="email" autocomplete="email"></label><label>Phone / WhatsApp<input name="phone" autocomplete="tel"></label>
 <label>Country<input name="country" autocomplete="country-name"></label><label>Buyer type<select name="type"><option>Importer / distributor</option><option>Wholesaler</option><option>Retailer</option><option>Builder / architect</option><option>Individual</option></select></label><label class="full">Notes (finish, packing, target price)<textarea name="notes" rows="4"></textarea></label></div>
-<p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn">Send enquiry by email</button><button type="button" class="btn wab" id="wasend">{WA_SVG} Send on WhatsApp</button></p><p class="mt">This opens your email app with the full list filled in, addressed to {CO['email']}.</p></form></section></div>
+<input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"><p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn">Send enquiry</button><button type="button" class="btn wab" id="wasend">{WA_SVG} Send on WhatsApp</button></p><p class="mt">{'Your enquiry goes straight to our sales team.' if W3F else 'This opens your email app with the full list filled in, addressed to ' + CO['email'] + '.'} Prefer WhatsApp? Use the green button.</p></form></section></div>
 <script>const I={json.dumps(qidx)};function draw(){{const q=get(),k=Object.keys(q);document.getElementById('empty').style.display=k.length?'none':'';document.getElementById('rows').innerHTML=k.map(c=>`<tr><td><img src="img/t/${{c}}.jpg" alt=""></td><td><b>${{c}}</b><br><a href="product/${{I[c][1]}}.html">${{I[c][0]}}</a><br><span class="mt">${{I[c][2]}}</span></td><td><input type="number" min="1" value="${{q[c]}}" data-c="${{c}}"></td><td><button class="x" data-r="${{c}}">Remove</button></td></tr>`).join('')}}
 document.addEventListener('input',ev=>{{const c=ev.target.dataset.c;if(c){{const q=get();q[c]=Math.max(1,parseInt(ev.target.value)||1);put(q)}}}});document.addEventListener('click',ev=>{{const r=ev.target.dataset.r;if(r){{const q=get();delete q[r];put(q);draw()}}}});
-document.getElementById('qf').onsubmit=ev=>{{ev.preventDefault();const q=get();if(!Object.keys(q).length){{toast('Add products first');return}}const f=new FormData(ev.target);let b='Quote request\\n\\n'+Object.keys(q).map(c=>`${{c}}  ${{I[c][0]}}  x ${{q[c]}}`).join('\\n')+'\\n\\n';for(const [k,v] of f)b+=k+': '+v+'\\n';location.href='mailto:{CO['email']}?subject='+encodeURIComponent('Quote request - '+(f.get('company')||f.get('name')))+'&body='+encodeURIComponent(b)}};document.getElementById('wasend').onclick=()=>{{const q=get();if(!Object.keys(q).length){{toast('Add products first');return}}const f=new FormData(document.getElementById('qf'));let b='Quote request\n'+Object.keys(q).map(c=>`${{c}} ${{I[c][0]}} x ${{q[c]}}`).join('\n')+'\n';for(const [k,v] of f)if(v)b+=k+': '+v+'\n';window.open('https://wa.me/{CO['wa']}?text='+encodeURIComponent(b),'_blank')}};draw();</script>"""
+document.getElementById('qf').onsubmit=async ev=>{{ev.preventDefault();const q=get();if(!Object.keys(q).length){{toast('Add products first');return}}const f=new FormData(ev.target);let b='Quote request\\n\\n'+Object.keys(q).map(c=>`${{c}}  ${{I[c][0]}}  x ${{q[c]}}`).join('\\n')+'\\n\\n';for(const [k,v] of f)b+=k+': '+v+'\\n';if(f.get('botcheck'))return;const btn=ev.target.querySelector('button.btn');btn.disabled=true;btn.textContent='Sending…';try{{if(await sendLead('Quote request - '+(f.get('company')||f.get('name')),Object.assign(Object.fromEntries(f),{{items:Object.keys(q).map(c=>`${{c}} ${{I[c][0]}} x ${{q[c]}}`).join('\\n')}}))){{put({{}});draw();document.getElementById('qf').innerHTML='<div class="note ok"><b>Thank you, your enquiry has been sent.</b><br>We usually reply within one working day with prices, MOQ and lead time.</div>';return}}}}catch(err){{toast('Could not send online, opening email instead')}}btn.disabled=false;btn.textContent='Send enquiry';location.href='mailto:{CO['email']}?subject='+encodeURIComponent('Quote request - '+(f.get('company')||f.get('name')))+'&body='+encodeURIComponent(b)}};document.getElementById('wasend').onclick=()=>{{const q=get();if(!Object.keys(q).length){{toast('Add products first');return}}const f=new FormData(document.getElementById('qf'));let b='Quote request\\n'+Object.keys(q).map(c=>`${{c}} ${{I[c][0]}} x ${{q[c]}}`).join('\\n')+'\\n';for(const [k,v] of f)if(v)b+=k+': '+v+'\\n';window.open('https://wa.me/{CO['wa']}?text='+encodeURIComponent(b),'_blank')}};draw();</script>"""
 page('quote.html', 'Quote List | Sameer Exports', quote)
 
 # ---------- static content pages
@@ -297,7 +334,7 @@ pages = {
  'export.html': ('Export & Bulk Orders', """<span class="kick">B2B</span><h1>Export &amp; bulk orders</h1><p>We manufacture to order for importers, distributors, wholesalers and project buyers. Send your product list with codes and quantities and we will reply with a detailed quotation.</p><h2>What we offer</h2><ul><li>Custom finishes, sizes and packing on most designs</li><li>Private label and custom packaging</li><li>Samples before bulk production</li><li>Sea and air freight from India, with export documentation</li><li>Quality checks at every stage under our ISO 9001 system</li></ul><h2>What to include in an enquiry</h2><ul><li>Product codes and quantities</li><li>Required finish for each item</li><li>Destination country and port</li><li>Packing requirements</li></ul><p><a class="btn" href="quote.html">Open quote list</a></p>"""),
  'faq.html': ('FAQ', """<h1>Frequently asked questions</h1><h2>Do you sell retail?</h2><p>We are a manufacturer and exporter, so orders are made to order in trade quantities. Small trial orders and samples can be discussed.</p><h2>Why are prices not shown?</h2><p>Price depends on finish, quantity, packing and destination. Add items to your quote list and we will send exact pricing.</p><h2>Can I get a different finish?</h2><p>Yes. Most brass items can be supplied in polished lacquered, chrome, satin chrome, antique or other finishes. See the finishes guide.</p><h2>What is the lead time?</h2><p>Lead time depends on the quantity and finish and is confirmed with each quotation.</p><h2>Which countries do you ship to?</h2><p>We export worldwide, with regular clients in the UK, US, Mexico, Germany, Canada and Australia.</p>"""),
  'contact.html': ('Contact', f"""<span class="kick">Get in touch</span><h1>Contact us</h1><div class="cards3"><div class="card"><h3>Factory &amp; office</h3><p>{CO['addr']}</p><p><a style="color:var(--brass)" href="https://www.google.com/maps/place/?q=place_id:0x3974bb9986410309:0x683f90c2772f122f" target="_blank" rel="noopener">Get directions →</a></p></div><div class="card"><h3>Phone</h3><p><a href="tel:{CO['phone']}">{CO['phone']}</a><br>Fax {CO['fax']}</p></div><div class="card"><h3>WhatsApp</h3><p><a href="https://wa.me/{CO['wa']}" target="_blank" rel="noopener">+91 97581 55555</a></p></div><div class="card"><h3>Email</h3><p><a href="mailto:{CO['email']}">{CO['email']}</a></p></div></div>
-<h2>Send a message</h2><form onsubmit="event.preventDefault();const f=new FormData(this);location.href='mailto:{CO['email']}?subject='+encodeURIComponent('Website enquiry - '+f.get('name'))+'&body='+encodeURIComponent(f.get('msg')+'\\n\\n'+f.get('name')+'\\n'+f.get('email')+'\\n'+f.get('phone'))"><div class="f"><label>Name<input required name="name" autocomplete="name"></label><label>Email<input required type="email" name="email" autocomplete="email"></label><label>Phone<input name="phone" autocomplete="tel"></label><label class="full">Message<textarea required name="msg" rows="5"></textarea></label></div><p><button class="btn">Send</button></p></form>
+<h2>Send a message</h2><form onsubmit="event.preventDefault();const f=new FormData(this),fm=this;if(f.get('botcheck'))return;sendLead('Website enquiry - '+f.get('name'),Object.fromEntries(f)).then(ok=>{{if(ok){{fm.innerHTML='<div class=&quot;note ok&quot;><b>Thank you, we have your message.</b> We will reply within one working day.</div>';return}}location.href='mailto:{CO['email']}?subject='+encodeURIComponent('Website enquiry - '+f.get('name'))+'&body='+encodeURIComponent(f.get('msg')+'\\n\\n'+f.get('name')+'\\n'+f.get('email')+'\\n'+f.get('phone'))}}).catch(()=>toast('Could not send, please email or WhatsApp us'))"><input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"><div class="f"><label>Name<input required name="name" autocomplete="name"></label><label>Email<input required type="email" name="email" autocomplete="email"></label><label>Phone<input name="phone" autocomplete="tel"></label><label class="full">Message<textarea required name="msg" rows="5"></textarea></label></div><p><button class="btn">Send</button></p></form>
 <iframe title="Map" style="width:100%;height:320px;border:0;border-radius:14px;margin-top:20px" loading="lazy" src="https://maps.google.com/maps?q=27.9303815,78.1375334&z=16&output=embed"></iframe>"""),
  'privacy.html': ('Privacy Policy', '<h1>Privacy policy</h1><p>This website does not use tracking cookies or collect personal data on its servers. Your quote list is stored only in your own browser. When you send an enquiry, it opens your email application, and the details you choose to send are used only to reply to your enquiry.</p>'),
  'terms.html': ('Terms', '<h1>Terms of use</h1><p>Product images and specifications are for reference. Specifications are subject to change without notice. All orders are confirmed by written quotation and proforma invoice.</p>'),
@@ -332,5 +369,9 @@ for n in (192, 512):
     d.ellipse((m, m, n - m, n - m), fill='#b8892b'); d.ellipse((m * 2, m * 2, n - m * 2, n - m * 2), fill='#d9b45a')
     im.save(os.path.join(OUT, f'icon-{n}.png'))
 urls = ['index.html', 'shop.html', 'quote.html', 'blog/index.html'] + list(pages) + [f'blog/{p[0]}.html' for p in POSTS] + [f"product/{p['slug']}.html" for p in P]
-open(os.path.join(OUT, 'sitemap.txt'), 'w').write('\n'.join(urls))
+urls = [u for u in urls if u not in ('quote.html', '404.html')] + [f'category/{slug(s)}.html' for s in SECTIONS] + [f'category/{slug(c)}.html' for c in CATS if slug(c) not in {slug(s) for s in SECTIONS}]
+today = datetime.date.today().isoformat()
+open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{URL}{"" if u == "index.html" else u}</loc><lastmod>{today}</lastmod></url>' for u in urls) + '</urlset>')
+open(os.path.join(OUT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nDisallow: /quote.html\n\nSitemap: {URL}sitemap.xml\n')
+if os.path.exists(os.path.join(OUT, 'sitemap.txt')): os.remove(os.path.join(OUT, 'sitemap.txt'))
 print('pages:', len(urls) + len(CATS) + len(SECTIONS))
