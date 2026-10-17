@@ -37,6 +37,7 @@ for p in P:
 CATS = {c: ps for s in SECTIONS.values() for c, ps in s.items()}
 
 CSS = """
+.dlhero{background:var(--glass,var(--card));border:1px solid var(--line);border-radius:18px;padding:24px;margin:20px 0 34px}.dlhero h2{margin:0 0 4px}.dls{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}.dl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}.dl:hover{border-color:var(--brass)}.dl span{grid-column:1;color:var(--mute);font-size:13px}.dl i{grid-row:1/3;grid-column:2;font-style:normal;color:var(--brass);font-weight:600;font-size:14px}
 /* preloader: a hand presses the lever, the door swings open */
 #pl{position:fixed;inset:0;z-index:999;background:#0b0907;display:grid;place-items:center;perspective:1400px;transition:opacity .6s,visibility .6s}html.nopl #pl{display:none}#pl.gone{opacity:0;visibility:hidden}
 .pl-room{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,#f6e3b4 0,#d9b45a 18%,#2a2014 48%,#0b0907 70%);opacity:0;transition:opacity 1s .9s}#pl.go .pl-room{opacity:1}
@@ -214,8 +215,8 @@ def page(path, title, body, desc='', nav='', image='img/p/SE-3001.jpg', ld=None)
 <header><div class="hd w"><button class="hb" aria-label="Open menu" aria-controls="dr" aria-expanded="false" data-menu>☰</button><a class="logo" href="{b}index.html"><i></i><span>Sameer Exports<small>Brass Builders Hardware</small></span></a>
 <form class="srch" action="{b}shop.html"><input id="sq" type="search" enterkeyhint="search" name="q" placeholder="Search products or codes" aria-label="Search products" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sug" data-base="{b}"><div class="sug" id="sug" role="listbox" hidden></div><button class="btn">Search</button></form>
 <button class="tt" data-theme-toggle aria-label="Switch light or dark theme">◐</button><a class="qc" href="{b}quote.html">Quote list <b data-qc>0</b></a></div>
-<nav class="mn"><div class="w"><a href="{b}index.html">Home</a><div class="dd"><a href="{b}shop.html" class="{"on" if nav and nav != "shop" or nav == "shop" else ""}">Products ▾</a><div class="menu"><a href="{b}shop.html"><b>All products</b></a>{cats_nav}</div></div><a href="{b}export.html">Export &amp; Bulk</a><a href="{b}finishes.html">Finishes</a><a href="{b}about.html">About</a><a href="{b}blog/index.html">Blog</a><a href="{b}contact.html">Contact</a><a class="btn s" href="{b}quote.html" style="margin-left:auto;align-self:center">Get a quote</a></div></nav></header>
-<div class="ov" data-close hidden></div><nav class="drawer" id="dr" aria-label="Mobile menu" hidden><div class="dh"><b>Menu</b><button class="hb" aria-label="Close menu" data-close>✕</button></div><a href="{b}shop.html"><b>All products</b></a>{cats_nav}<hr><a href="{b}export.html">Export &amp; bulk orders</a><a href="{b}finishes.html">Finishes guide</a><a href="{b}about.html">About</a><a href="{b}blog/index.html">Blog</a><a href="{b}faq.html">FAQ</a><a href="{b}contact.html">Contact</a><a class="btn" href="tel:{CO['phone']}" style="margin-top:12px;justify-content:center">Call {CO['phone']}</a></nav>
+<nav class="mn"><div class="w"><a href="{b}index.html">Home</a><div class="dd"><a href="{b}shop.html" class="{"on" if nav and nav != "shop" or nav == "shop" else ""}">Products ▾</a><div class="menu"><a href="{b}shop.html"><b>All products</b></a>{cats_nav}</div></div><a href="{b}catalogue.html">Catalogue PDF</a><a href="{b}export.html">Export &amp; Bulk</a><a href="{b}finishes.html">Finishes</a><a href="{b}about.html">About</a><a href="{b}blog/index.html">Blog</a><a href="{b}contact.html">Contact</a><a class="btn s" href="{b}quote.html" style="margin-left:auto;align-self:center">Get a quote</a></div></nav></header>
+<div class="ov" data-close hidden></div><nav class="drawer" id="dr" aria-label="Mobile menu" hidden><div class="dh"><b>Menu</b><button class="hb" aria-label="Close menu" data-close>✕</button></div><a href="{b}shop.html"><b>All products</b></a>{cats_nav}<hr><a href="{b}catalogue.html">Download catalogue (PDF)</a><a href="{b}export.html">Export &amp; bulk orders</a><a href="{b}finishes.html">Finishes guide</a><a href="{b}about.html">About</a><a href="{b}blog/index.html">Blog</a><a href="{b}faq.html">FAQ</a><a href="{b}contact.html">Contact</a><a class="btn" href="tel:{CO['phone']}" style="margin-top:12px;justify-content:center">Call {CO['phone']}</a></nav>
 <nav class="mbar" aria-label="Quick actions"><a href="{b}index.html"><span>⌂</span>Home</a><a href="{b}shop.html"><span>▦</span>Shop</a><a href="{b}shop.html#search" data-search><span>⌕</span>Search</a><a href="{b}quote.html"><span>☰<b data-qc>0</b></span>Quote</a><a href="tel:{CO['phone']}"><span>✆</span>Call</a></nav>
 <a class="wa" href="https://wa.me/{CO['wa']}?text={quote_plus('Hello Sameer Exports, I would like a quote.')}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">{WA_SVG}<span>WhatsApp</span></a>
 <main>{body.replace('{B}', b)}</main>
@@ -255,7 +256,7 @@ popular = ''.join(card(p) for p in pick(10, 91))
 brass_cats = ''.join(f"""<a class="sec" href="{{B}}category/{slug(c)}.html"><div class="im"><img loading="lazy" src="{{B}}img/t/{ps[0]['code']}.jpg" alt=""></div><b>{e(c)}</b><span>{len(ps)} products</span></a>""" for c, ps in list(SECTIONS['Brass Hardware'].items())[:12])
 home = f"""<div class="hero"><div class="w"><div><span class="kick">Manufacturer &amp; exporter · Aligarh, India</span>
 <h1>Solid brass hardware, <em>cast and finished</em> by hand since 1994.</h1><p>Door knockers, lever handles, hinges, cabinet fittings and wrought iron. Over 900 catalogue designs, made to order for importers, wholesalers and builders worldwide.</p>
-<p style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="{{B}}shop.html">Browse the catalogue</a><a class="btn o" href="{{B}}export.html">Bulk &amp; export orders</a></p></div>
+<p style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="{{B}}shop.html">Browse the catalogue</a><a class="btn o" href="{{B}}catalogue.html">Download catalogue</a></p></div>
 <div class="h3d"><canvas id="knock" aria-label="Animated 3D brass door knocker. Drag to rotate." role="img"></canvas><div class="hgrid">{hero_imgs}</div><span class="h3hint">Drag to rotate</span></div></div></div>
 <script type="importmap">{{"imports":{{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}}}</script><script type="module" src="{{B}}knocker3d.js"></script>
 <div class="w"><div class="feat"><div><b>ISO 9001 certified</b><span>Strict quality control</span></div><div><b>900+ designs</b><span>Brass, iron, aluminium, wood</span></div><div><b>14 finishes</b><span>BPL, SCP, antique, powder coat</span></div><div><b>Exporting worldwide</b><span>UK, US, EU, Canada, Australia</span></div></div></div>
@@ -285,7 +286,7 @@ page('shop.html', 'All Products | Sameer Exports', shop, 'Browse the full Sameer
 for s, cs in SECTIONS.items():
     tiles = ''.join(f"""<a class="sec" href="{slug(c)}.html"><div class="im"><img loading="lazy" src="{{B}}img/t/{ps[0]['code']}.jpg" alt=""></div><b>{e(c)}</b><span>{len(ps)} products</span></a>""" for c, ps in cs.items())
     rows = ''.join(row(c, ps, f'{slug(c)}.html') for c, ps in cs.items() if slug(c) != slug(s))
-    body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / {e(s)}</div><section style="padding-top:20px"><h1>{e(s)}</h1><p class="mt">{sum(len(v) for v in cs.values())} designs across {len(cs)} ranges.</p><div class="secs">{tiles}</div>{TRUST}</section><section style="padding-top:0">{rows}{BULK}</section></div>'
+    body = f'<div class="w"><div class="crumb"><a href="{{B}}index.html">Home</a> / {e(s)}</div><section style="padding-top:20px"><h1>{e(s)}</h1><p class="mt" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">{sum(len(v) for v in cs.values())} designs across {len(cs)} ranges. <a class="btn s" href="{{B}}catalogue/Sameer-Exports-{slug(s)}.pdf" download>Download {e(s)} PDF</a></p><div class="secs">{tiles}</div>{TRUST}</section><section style="padding-top:0">{rows}{BULK}</section></div>'
     page(f'category/{slug(s)}.html', f'{s} Manufacturer & Exporter, Aligarh India | Sameer Exports', body, f'{s} manufactured and exported by Sameer Exports, Aligarh.', s)
     for c, ps in cs.items():
         if slug(c) == slug(s):
@@ -340,6 +341,15 @@ pages = {
  'terms.html': ('Terms', '<h1>Terms of use</h1><p>Product images and specifications are for reference. Specifications are subject to change without notice. All orders are confirmed by written quotation and proforma invoice.</p>'),
  '404.html': ('Page not found', '<h1>Page not found</h1><p>The page you are looking for does not exist.</p><p><a class="btn" href="index.html">Go home</a> <a class="btn o" href="shop.html">Browse products</a></p>'),
 }
+CI = json.load(open(os.path.join(OUT, 'catalogue', 'index.json'))) if os.path.exists(os.path.join(OUT, 'catalogue', 'index.json')) else []
+full = next((c for c in CI if c['file'] == 'Sameer-Exports-Catalogue.pdf'), None)
+SEC_BY_FILE = {'Sameer-Exports-' + slug(s) + '.pdf': s for s in SECTIONS}
+rows_ = ''.join(f'<a class="dl" href="catalogue/{c["file"]}" download><b>{e(SEC_BY_FILE.get(c["file"], c["file"]))}</b><span>{c["pages"]} pages · {c["mb"]} MB</span><i>Download</i></a>' for c in CI if c is not full)
+if full:
+    share = quote_plus('Sameer Exports product catalogue: ' + URL + 'catalogue/' + full['file'])
+    pages['catalogue.html'] = ('Product Catalogue PDF', f"""<span class="kick">Download</span><h1>Product catalogue {YEAR}</h1><p>Our complete range of {len(P)} designs with photos, product codes, sizes and finishes. The PDF opens on any phone, tablet or computer, and every product is tappable to open its page here.</p>
+<div class="dlhero"><h2>Complete catalogue</h2><p class="mt">{full['pages']} pages · {full['mb']} MB · A4, print ready</p><p style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="catalogue/{full['file']}" download>Download full catalogue</a><a class="btn o" href="catalogue/{full['file']}" target="_blank" rel="noopener">View online</a><a class="btn wab" target="_blank" rel="noopener" href="https://wa.me/?text={share}">Share on WhatsApp</a></p></div>
+<h2>Download by section</h2><p class="mt">Smaller files, quicker on mobile data.</p><div class="dls">{rows_}</div>""")
 for f, (t, b) in pages.items():
     page(f, f'{t} | Sameer Exports', f'<div class="w"><section class="prose">{b}</section></div>')
 
@@ -368,7 +378,7 @@ for n in (192, 512):
     im = Image.new('RGB', (n, n), '#14110d'); d = ImageDraw.Draw(im); m = n // 6
     d.ellipse((m, m, n - m, n - m), fill='#b8892b'); d.ellipse((m * 2, m * 2, n - m * 2, n - m * 2), fill='#d9b45a')
     im.save(os.path.join(OUT, f'icon-{n}.png'))
-urls = ['index.html', 'shop.html', 'quote.html', 'blog/index.html'] + list(pages) + [f'blog/{p[0]}.html' for p in POSTS] + [f"product/{p['slug']}.html" for p in P]
+urls = ['index.html', 'catalogue.html', 'shop.html', 'quote.html', 'blog/index.html'] + list(pages) + [f'blog/{p[0]}.html' for p in POSTS] + [f"product/{p['slug']}.html" for p in P]
 urls = [u for u in urls if u not in ('quote.html', '404.html')] + [f'category/{slug(s)}.html' for s in SECTIONS] + [f'category/{slug(c)}.html' for c in CATS if slug(c) not in {slug(s) for s in SECTIONS}]
 today = datetime.date.today().isoformat()
 open(os.path.join(OUT, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{URL}{"" if u == "index.html" else u}</loc><lastmod>{today}</lastmod></url>' for u in urls) + '</urlset>')

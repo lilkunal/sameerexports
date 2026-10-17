@@ -2498,7 +2498,7 @@
  },
  {
   "code": "SE-110017",
-  "section": "Candle Stands",
+  "section": "Brass Hardware",
   "category": "Brass Hooks",
   "name": "Ceramic Triple Hook",
   "size": "",
@@ -4017,8 +4017,8 @@
  {
   "code": "SE-20007",
   "section": "Brass Hardware",
-  "category": "Brass Stair Fittings",
-  "name": "with Stud",
+  "category": "Brass Castor Wheels",
+  "name": "Castor Wheel with Stud",
   "size": "",
   "finish": "Brass Polished Lacquered",
   "finish_code": "BPL",
@@ -4028,8 +4028,8 @@
  {
   "code": "SE-20008",
   "section": "Brass Hardware",
-  "category": "Brass Stair Fittings",
-  "name": "with Stud",
+  "category": "Brass Castor Wheels",
+  "name": "Castor Wheel with Stud",
   "size": "",
   "finish": "Brass Polished Lacquered",
   "finish_code": "BPL",
@@ -4039,8 +4039,8 @@
  {
   "code": "SE-20009",
   "section": "Brass Hardware",
-  "category": "Brass Stair Fittings",
-  "name": "with cup",
+  "category": "Brass Castor Wheels",
+  "name": "Castor Wheel with Cup",
   "size": "",
   "finish": "Antique Brass",
   "finish_code": "",
@@ -4050,8 +4050,8 @@
  {
   "code": "SE-20010",
   "section": "Brass Hardware",
-  "category": "Brass Stair Fittings",
-  "name": "withcup",
+  "category": "Brass Castor Wheels",
+  "name": "Castor Wheel with Cup",
   "size": "",
   "finish": "Brass Polished Lacquered",
   "finish_code": "BPL",
@@ -4061,8 +4061,8 @@
  {
   "code": "SE-20011",
   "section": "Brass Hardware",
-  "category": "Brass Stair Fittings",
-  "name": "Castorwheel withcup",
+  "category": "Brass Castor Wheels",
+  "name": "Castor Wheel with Cup",
   "size": "",
   "finish": "Brass Polished Lacquered",
   "finish_code": "BPL",
@@ -4072,8 +4072,8 @@
  {
   "code": "SE-20012",
   "section": "Brass Hardware",
-  "category": "Brass Stair Fittings",
-  "name": "Castorwheel with Pin",
+  "category": "Brass Castor Wheels",
+  "name": "Castor Wheel with Pin",
   "size": "",
   "finish": "Brass Polished Lacquered",
   "finish_code": "BPL",
@@ -8384,7 +8384,7 @@
  {
   "code": "SE-42009",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8406,7 +8406,7 @@
  {
   "code": "SE-42010",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8417,7 +8417,7 @@
  {
   "code": "SE-42011",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool lron",
   "size": "",
   "finish": "Powder Coated Textured",
@@ -8450,7 +8450,7 @@
  {
   "code": "SE-42012",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8461,7 +8461,7 @@
  {
   "code": "SE-42013",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8494,7 +8494,7 @@
  {
   "code": "SE-42014",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8505,7 +8505,7 @@
  {
   "code": "SE-42015",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8538,7 +8538,7 @@
  {
   "code": "SE-42016",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -8549,7 +8549,7 @@
  {
   "code": "SE-42017",
   "section": "Garden Tools",
-  "category": "Aluminium Handles",
+  "category": "Garden Tools",
   "name": "Garden Tool",
   "size": "",
   "finish": "Aluminium Anodized",
@@ -9396,7 +9396,7 @@
  {
   "code": "SE-50002",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Stair Fitting",
   "size": "",
   "finish": "Satin Chrome Plated",
@@ -9407,7 +9407,7 @@
  {
   "code": "SE-50003",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Panic Snap",
   "size": "",
   "finish": "Satin Chrome Plated",
@@ -9440,7 +9440,7 @@
  {
   "code": "SE-50001",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Old Double Pin Buckle",
   "size": "1\"",
   "finish": "Stainless Steel",
@@ -9451,7 +9451,7 @@
  {
   "code": "SE-50004",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Bull Snap",
   "size": "",
   "finish": "Satin Chrome Plated",
@@ -9462,7 +9462,7 @@
  {
   "code": "SE-50005",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Stud Kajluck",
   "size": "1\"Square",
   "finish": "Satin Chrome Plated",
@@ -9506,7 +9506,7 @@
  {
   "code": "SE-50006",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "S.L.B.Roller Buckle",
   "size": "1\"",
   "finish": "Satin Chrome Plated",
@@ -9517,7 +9517,7 @@
  {
   "code": "SE-50007",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Key",
   "size": "",
   "finish": "Satin Chrome Plated",
@@ -9528,7 +9528,7 @@
  {
   "code": "SE-50008",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Bigl",
   "size": "1\"Round",
   "finish": "Satin Chrome Plated",
@@ -9539,7 +9539,7 @@
  {
   "code": "SE-50009",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Stud Kajluckl 6/8Round",
   "size": "",
   "finish": "Satin Chrome Plated",
@@ -9594,7 +9594,7 @@
  {
   "code": "SE-50010",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Stair Fitting",
   "size": "1\"",
   "finish": "Stainless Steel",
@@ -9605,7 +9605,7 @@
  {
   "code": "SE-50011",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Saj Big Long Buckle 1%",
   "size": "",
   "finish": "Stainless Steel",
@@ -9616,7 +9616,7 @@
  {
   "code": "SE-50012",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Big Rass Kari",
   "size": "",
   "finish": "Stainless Steel",
@@ -9627,7 +9627,7 @@
  {
   "code": "SE-50013",
   "section": "Saddlery Fittings",
-  "category": "Brass Stair Fittings",
+  "category": "Saddlery Fittings",
   "name": "Small Rass Kari",
   "size": "",
   "finish": "Stainless Steel",
