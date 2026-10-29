@@ -141,7 +141,7 @@ p{margin-bottom:3mm}
 def card(p):
     meta = ' · '.join(x for x in (p['size'], p['finish']) if x)
     return (f'<a class="card" href="{URL}product/{p["slug"]}.html"><div class="im"><img src="{img(p["code"])}" alt=""></div>'
-            f'<div class="bd"><div class="cd">{p["code"]}</div><h4>{e(p["name"])}</h4><div class="mt">{e(meta) or "&nbsp;"}</div></div></a>')
+            f'<div class="bd"><div class="cd">{p["code"]}</div><h4>{e(p["name"])}</h4><div class="mt">{e(p["size"]) or "&nbsp;"}</div><div class="mt">{e(p["finish"]) or "&nbsp;"}</div></div></a>')
 
 
 def footer(n, label):

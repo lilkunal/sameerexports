@@ -1,4 +1,4 @@
-import json, re, difflib, csv, collections, sys
+import json, re, os, difflib, csv, collections, sys
 W = sys.argv[1]
 R = json.load(open(f'{W}/records_seg.json'))
 CATS = ["Brass Lever Handles","Brass Rose Latches","Brass Door Knockers","Brass Tower Bolts","Brass Casement Stays","Brass Casement Fasteners","Brass Cabinet Fittings","Brass Escutcheons","Brass Drawer Pulls","Brass Flush Pulls & Rings","Brass Cabinet Handles","Brass Pull Handles","Brass Hooks","Brass Curtain Holds & Tie Backs","Brass Sash Lifts & Sash Eyes","Brass Door Stoppers","Brass Gate Latches","Brass Hinges","Brass Letter Plates","Brass Newspaper Holders & Finger Plates","Brass Mortice Knobs","Brass Cabinet Knobs","Brass Bell Push & Corner Brackets","Brass Stair Fittings","Brass Numerals","Entrance Door Handles","Brass Bathroom Fittings","Brass Hammers & Bells","Aluminium Handles","Aluminium Accessories","Iron Lever Handles","Iron Mortice Knobs & Rose Handles","Iron Cabinet Knobs","Iron Knockers","Iron Hinges","Iron Window Fittings","Iron Gate Latches","Iron Latches","Iron Drawer Pulls","Iron Cabinet Handles","Iron Cage Handles","Iron Hooks","Iron Letter Plates","Iron Escutcheons","Iron Tower Bolts","Iron Hasps & Trunk Handles","Iron Studs & Table Corners","Hand Forged Entrance Door Handles","Cast Iron Pulleys","Speakeasy & Side Light Grills","Wooden Knobs","Wooden Cabinet Handles","Wooden Door Knobs","Wooden Cabinet Knobs","Bone Cabinet Knobs","Garden Tools","Lanterns","Fire Sets","Bar Accessories","Napkin Holders","Coasters","Aluminium Flower Vase","Fancy Boxes","Saddlery Fittings","Candle Stands"]
@@ -44,6 +44,20 @@ for p in out:
 NAME_FIX = {'SE-20007': 'Castor Wheel with Stud', 'SE-20008': 'Castor Wheel with Stud', 'SE-20009': 'Castor Wheel with Cup', 'SE-20010': 'Castor Wheel with Cup', 'SE-20011': 'Castor Wheel with Cup', 'SE-20012': 'Castor Wheel with Pin'}
 for p in out:
     p['name'] = NAME_FIX.get(p['code'], p['name'])
+# names and sizes as published on brass-builders.com (proofread copy of this same catalogue); our photos stay
+BB = f'{W}/repo/data/brassbuilders.json'
+if os.path.exists(BB):
+    bb = json.load(open(BB, encoding='utf-8'))
+    for p in out:
+        b = bb.get(p['code'])
+        if not b: continue
+        p['name'] = b['name'][:1].upper() + b['name'][1:]
+        fin = p['finish'].lower()
+        sz = [x for x in b['specs'] if x.lower() != fin]
+        if sz:
+            p['size'] = re.sub(r'\s*,?\s*/\s*', ', ', sz[0]).replace(',,', ',').strip(' ,')
+        elif p['size'] and not any(ch.isdigit() for ch in p['size']):
+            p['size'] = ''
 json.dump(out, open(f'{W}/repo/data/products.json','w'), indent=1)
 with open(f'{W}/repo/data/products.csv','w',newline='',encoding='utf-8-sig') as f:
     w = csv.DictWriter(f, fieldnames=list(out[0])); w.writeheader(); w.writerows(out)
